@@ -14,7 +14,7 @@ public class GUI implements ActionListener, MouseWheelListener{
 	private static JLabel success;
 	
 	private static JFrame mainFrame;
-	
+	private static JLabel background;
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -86,41 +86,50 @@ public class GUI implements ActionListener, MouseWheelListener{
 	
 	public static void displayMain() {
 		try {
+			Map map = new Map();
 			mainFrame = new JFrame("Western Geographical Information System");
-    		Map map = new Map();
-    		JLabel background = new JLabel("", map.getImage(), JLabel.CENTER);
+    		background = new JLabel("", map.getImage(), JLabel.CENTER);
     		
     		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    		mainFrame.setSize(Toolkit.getDefaultToolkit().getScreenSize());
-    		mainFrame.setState(JFrame.MAXIMIZED_BOTH);
-    		mainFrame.setLocation(0, 0);
+    		mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    		mainFrame.setSize(map.getImage().getIconWidth(), map.getImage().getIconHeight());
+    		mainFrame.setMinimumSize(mainFrame.getSize());
     		mainFrame.setVisible(true);
     		
-    		
     		background.setBounds(0, 0, map.getImage().getIconWidth(), map.getImage().getIconHeight());
+    		background.setLocation(0, 0);
     		background.addMouseWheelListener(new GUI());
     		
     		JLayeredPane layers = new JLayeredPane();
-    		layers.setPreferredSize(new Dimension(100, 100));
-    		layers.add(background);
-
+    		layers.setPreferredSize(new Dimension(mainFrame.getWidth(), mainFrame.getHeight()));
+    		layers.add(background, 1);
     		mainFrame.add(layers);
  
-        	JPanel panel = new JPanel();
-        	panel.setLayout(null);
-        	//mainFrame.add(panel);
-        	
-        	JButton next = new JButton("Next");
-        	JButton prev = new JButton("Previous");
-        	next.setBounds(10, 10, 100, 25);
-        	panel.add(next);
-        	//prev.setBounds(0, mainFrame.getHeight() - 25, 100, 25);
-        	//mainFrame.add(next);
-        	//mainFrame.add(prev);
+    		
+        	JButton next = new JButton("Next >");
+        	JButton prev = new JButton("< Previous");
+        	next.setBounds(mainFrame.getWidth() - 125, mainFrame.getHeight() - 75, 100, 25);
+        	prev.setBounds(25, mainFrame.getHeight() - 75, 100, 25);
+        	layers.add(next, 0);
+        	layers.add(prev, 0);
             next.addActionListener((ActionEvent e) -> { 
             	map.nextFloor();
-            	System.out.println(e);
-            	System.out.println("Button clicked");});
+            	layers.remove(background);
+            	background = new JLabel("", map.getImage(), JLabel.CENTER);
+            	background.setBounds(0, 0, map.getImage().getIconWidth(), map.getImage().getIconHeight());
+        		background.setLocation(0, 0);
+        		background.addMouseWheelListener(new GUI());
+            	layers.add(background, 1);
+            	System.out.println(map.getImage());});
+            prev.addActionListener((ActionEvent e) -> { 
+            	map.prevFloor();
+            	layers.remove(background);
+            	background = new JLabel("", map.getImage(), JLabel.CENTER);
+            	background.setBounds(0, 0, map.getImage().getIconWidth(), map.getImage().getIconHeight());
+        		background.setLocation(0, 0);
+        		background.addMouseWheelListener(new GUI());
+            	layers.add(background, 1);
+            	System.out.println(map.getImage());});
         	
         }
         catch (Exception e) {
