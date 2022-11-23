@@ -1,17 +1,8 @@
-import java.awt.Toolkit;
+import java.awt.*;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
+import java.awt.event.*;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 public class GUI implements ActionListener, MouseWheelListener{
 	
@@ -22,7 +13,7 @@ public class GUI implements ActionListener, MouseWheelListener{
 	private static JButton button;
 	private static JLabel success;
 	
-	private static JLabel map;
+	private static JFrame mainFrame;
 	
 
 	public static void main(String[] args) {
@@ -95,37 +86,41 @@ public class GUI implements ActionListener, MouseWheelListener{
 	
 	public static void displayMain() {
 		try {
-			JFrame frame = new JFrame("Western Geographical Information System");
-    		ImageIcon img = new ImageIcon("resources/MC_1.jpg");
-    		JLabel map = new JLabel("", img, JLabel.CENTER);
-        	
-    		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        	frame.setSize(img.getIconWidth()+15, img.getIconHeight() - 60);
-        	frame.setMinimumSize(frame.getSize());
-        	frame.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width/2 - img.getIconWidth()/2, 0);
+			mainFrame = new JFrame("Western Geographical Information System");
+    		Map map = new Map();
+    		JLabel background = new JLabel("", map.getImage(), JLabel.CENTER);
+    		
+    		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    		mainFrame.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+    		mainFrame.setState(JFrame.MAXIMIZED_BOTH);
+    		mainFrame.setLocation(0, 0);
+    		mainFrame.setVisible(true);
+    		
+    		
+    		background.setBounds(0, 0, map.getImage().getIconWidth(), map.getImage().getIconHeight());
+    		background.addMouseWheelListener(new GUI());
+    		
+    		JLayeredPane layers = new JLayeredPane();
+    		layers.setPreferredSize(new Dimension(100, 100));
+    		layers.add(background);
 
-        	map.setBounds(0, 0, img.getIconWidth(), img.getIconHeight());
-        	frame.add(map);
+    		mainFrame.add(layers);
+ 
+        	JPanel panel = new JPanel();
+        	panel.setLayout(null);
+        	//mainFrame.add(panel);
         	
-        	frame.setVisible(true);
-        	
-        	
-        	map.addMouseWheelListener(new GUI());
-            
-        	/* Unworking previous and next floor buttons
         	JButton next = new JButton("Next");
         	JButton prev = new JButton("Previous");
-        	next.setBounds(frame.getWidth() - 110, 10, 100, 25);
-        	prev.setBounds(10, frame.getHeight() - 10, 100, 25);
-        	frame.add(next);
-            frame.add(prev);
+        	next.setBounds(10, 10, 100, 25);
+        	panel.add(next);
+        	//prev.setBounds(0, mainFrame.getHeight() - 25, 100, 25);
+        	//mainFrame.add(next);
+        	//mainFrame.add(prev);
             next.addActionListener((ActionEvent e) -> { 
-            	ImageIcon newImg = nextFloor(img.getDescription());
-        		JLabel bkrgnd = new JLabel("", newImg, JLabel.CENTER);
-        		bkrgnd.setBounds(0, 0, img.getIconWidth(), img.getIconHeight());
-        		frame.add(bkrgnd);});
-            
-            */
+            	map.nextFloor();
+            	System.out.println(e);
+            	System.out.println("Button clicked");});
         	
         }
         catch (Exception e) {
