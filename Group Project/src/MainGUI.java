@@ -2,13 +2,13 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class MainGUI implements ActionListener, MouseWheelListener, ComponentListener {
+public class MainGUI {
+	private Map map;
 	private static JFrame mainFrame;
 	private static JLabel background;
 	private static JLayeredPane layers;
 	private static JButton prev;
 	private static JButton next;
-	private Map map;
 	
 	public static void main(String args[]) {
 		new MainGUI();
@@ -16,91 +16,100 @@ public class MainGUI implements ActionListener, MouseWheelListener, ComponentLis
 	
 	public MainGUI() {
 		map = new Map();
-		
 		mainFrame = new JFrame("Western Geographical Information System");
+		background = new JLabel("", map.getImage(), JLabel.CENTER);
+		layers = new JLayeredPane();
+		prev = new JButton("< Previous");
+		next = new JButton("Next >");
+		
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		mainFrame.setSize(map.getImage().getIconWidth(), map.getImage().getIconHeight());
 		mainFrame.setMinimumSize(mainFrame.getSize());
 		mainFrame.setVisible(true);
-		mainFrame.addComponentListener(this);
 		
-		background = new JLabel("", map.getImage(), JLabel.CENTER);
-		background.setBounds(0, 0, map.getImage().getIconWidth(), map.getImage().getIconHeight());
-		background.setLocation((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2 - map.getImage().getIconWidth()/2, (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2 - map.getImage().getIconHeight()/2);
-		background.addMouseWheelListener(this);
+		mainFrame.addComponentListener(new ComponentListener() {
+			public void componentResized(ComponentEvent e) {
+				drawGUI();
+			}
+
+			public void componentMoved(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void componentShown(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void componentHidden(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		background.addMouseWheelListener(new MouseWheelListener() {
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				scroll(e);
+			}
+        });
+		next.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				nextButtonClicked(e);
+            }
+        });
+		prev.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				prevButtonClicked(e);
+            }
+        });
 		
-		layers = new JLayeredPane();
-		layers.setPreferredSize(new Dimension(mainFrame.getWidth(), mainFrame.getHeight()));
-		layers.add(background, 1);
-		mainFrame.add(layers);
-		
-		next = new JButton("Next >");
-		next.setBounds(mainFrame.getWidth() - 150, mainFrame.getHeight() - 75, 100, 25);
-		next.addActionListener(this);
-		layers.add(next, 0);
-		
-		prev = new JButton("< Previous");
-		prev.setBounds(25, mainFrame.getHeight() - 75, 100, 25);
-    	prev.addActionListener(this);
-    	layers.add(prev, 0);
-    	
+		drawGUI();
 	}
 	
-	public void updateBackground() {
+	public void drawGUI() {
+		mainFrame.remove(layers);
+		
+		background.setBounds(0, 0, map.getImage().getIconWidth(), map.getImage().getIconHeight());
+		background.setLocation(mainFrame.getWidth()/2 - map.getImage().getIconWidth()/2, mainFrame.getHeight()/2 - map.getImage().getIconHeight()/2);
+		
+		layers.setPreferredSize(new Dimension(mainFrame.getWidth(), mainFrame.getHeight()));
+		layers.add(background, 1);
+		
+		next.setBounds(mainFrame.getWidth() - 150, mainFrame.getHeight() - 75, 100, 25);
+		layers.add(next, 0);
+
+		prev.setBounds(25, mainFrame.getHeight() - 75, 100, 25);
+    	layers.add(prev, 0);
+    	
+    	mainFrame.add(layers);
 		mainFrame.repaint();
 	}
 	
-	@Override
-	public void mouseWheelMoved(MouseWheelEvent e) {
+	public void scroll(MouseWheelEvent e) {
 		System.out.println(e.getWheelRotation());
 	}
 	
-	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void nextButtonClicked(ActionEvent e) {
 		System.out.println(e.getActionCommand());
-		
-		if (e.getActionCommand().equals("< Previous")) {
-			map.prevFloor();
-		}
-		else if (e.getActionCommand().equals("Next >")) {
-			map.nextFloor();
-		}
-		
-    	layers.remove(background);
+
+		map.nextFloor();
     	background = new JLabel("", map.getImage(), JLabel.CENTER);
-    	background.setBounds(0, 0, map.getImage().getIconWidth(), map.getImage().getIconHeight());
-		background.setLocation(0, 0);
-		background.addMouseWheelListener(this);
-    	layers.add(background, 1);
-    	System.out.println(map.getImage());
+		
+    	drawGUI();
     	
-    	mainFrame.repaint();
-
-		
+    	System.out.println(map.getImage());
 	}
 
-	@Override
-	public void componentResized(ComponentEvent e) {
-		
-	}
+	public void prevButtonClicked(ActionEvent e) {
+		System.out.println(e.getActionCommand());
 
-	@Override
-	public void componentMoved(ComponentEvent e) {
-		// TODO Auto-generated method stub
+		map.prevFloor();
+    	background = new JLabel("", map.getImage(), JLabel.CENTER);
 		
-	}
-
-	@Override
-	public void componentShown(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void componentHidden(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
+    	drawGUI();
+    	
+    	System.out.println(map.getImage());
 	}
 	
 }
