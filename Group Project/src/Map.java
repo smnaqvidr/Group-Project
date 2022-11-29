@@ -1,8 +1,11 @@
 import javax.swing.*;
+
+import java.awt.Image;
 import java.io.*;
 
 public class Map {
 	private int floorNum;
+	private final int scale = 20;
 	private ImageIcon mapImage;
 	private File mapFile;
 	//private POI[] mapPOI;
@@ -10,7 +13,7 @@ public class Map {
 	public Map() {
 		mapFile = new File("resources/MC_1.jpg");
 		mapImage = new ImageIcon(mapFile.getPath());
-		floorNum = Integer.parseInt(mapFile.getPath().split("\\\\")[1].split("_")[1].split("\\.")[0]);
+		floorNum = 1;
 	}
 	
 	public Map(String buildingName, int fNum) {
@@ -55,14 +58,13 @@ public class Map {
 		return mapFile.getPath().split("\\\\")[1].split("_")[0];
 	}
 	
-	public ImageIcon getImage() {
+	public ImageIcon getImageIcon() {
 		return mapImage;
 	}
 	
-	/* Might not need this function
-	public String getMapFile() {
-		return mapFile.getPath();
+	public void resize(int rotation) {
+		ImageIcon newMap = new ImageIcon(mapImage.getImage().getScaledInstance(mapImage.getIconWidth() - rotation*scale, mapImage.getIconHeight() - rotation*scale, Image.SCALE_SMOOTH));
+		mapImage = newMap;
 	}
-	*/
-
+	
 }
