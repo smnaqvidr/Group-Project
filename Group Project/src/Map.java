@@ -8,9 +8,13 @@ public class Map {
 	//private POI[] mapPOI;
 	
 	public Map() {
+		
 		mapFile = new File("resources/MC_1.jpg");
+		
 		mapImage = new ImageIcon(mapFile.getPath());
-		floorNum = Integer.parseInt(mapFile.getPath().split("\\\\")[1].split("_")[1].split("\\.")[0]);
+		System.out.println(mapFile.getPath().split("/")[1]);
+		floorNum = Integer.parseInt(mapFile.getPath().split("/")[1].split("_")[1].split("\\.")[0]);
+		
 	}
 	
 	public Map(String buildingName, int fNum) {
@@ -59,10 +63,12 @@ public class Map {
 		return mapImage;
 	}
 	
-	/* Might not need this function
-	public String getMapFile() {
-		return mapFile.getPath();
+	public static void main(String args[]) {
+		Map m = new Map();
+		
+		
+		
+		
 	}
-	*/
 
 }

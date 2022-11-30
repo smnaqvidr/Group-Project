@@ -25,6 +25,11 @@ public class MainGUI implements ActionListener, MouseWheelListener, ComponentLis
 		mainFrame.setVisible(true);
 		mainFrame.addComponentListener(this);
 		
+		/*JMenuBar mb = new JMenuBar();
+        JMenu m1 = new JMenu("Menu");
+        JMenu m2 = new JMenu("Favorites");
+        JMenu m3 = new JMenu("Buildnings");*/
+		
 		background = new JLabel("", map.getImage(), JLabel.CENTER);
 		background.setBounds(0, 0, map.getImage().getIconWidth(), map.getImage().getIconHeight());
 		background.setLocation((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2 - map.getImage().getIconWidth()/2, (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2 - map.getImage().getIconHeight()/2);
@@ -44,6 +49,10 @@ public class MainGUI implements ActionListener, MouseWheelListener, ComponentLis
 		prev.setBounds(25, mainFrame.getHeight() - 75, 100, 25);
     	prev.addActionListener(this);
     	layers.add(prev, 0);
+    	
+    	 //mainFrame.getContentPane().add(BorderLayout.SOUTH, panel);
+         //mainFrame.getContentPane().add(BorderLayout.NORTH, mb);
+         
     	
 	}
 	
