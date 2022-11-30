@@ -1,14 +1,15 @@
 import javax.swing.*;
 
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.*;
 
 public class Map {
 	private int floorNum;
-	private final int scale = 20;
+	private final double scale = 0.05;
 	private ImageIcon mapImage;
 	private File mapFile;
-	//private POI[] mapPOI;
 	
 	public Map() {
 		mapFile = new File("resources/MC_1.jpg");
@@ -62,9 +63,22 @@ public class Map {
 		return mapImage;
 	}
 	
-	public void resize(int rotation) {
-		ImageIcon newMap = new ImageIcon(mapImage.getImage().getScaledInstance(mapImage.getIconWidth() - rotation*scale, mapImage.getIconHeight() - rotation*scale, Image.SCALE_SMOOTH));
-		mapImage = newMap;
+	public void resize(int zoom) throws IOException {
+		int newWidth = (int) (mapImage.getIconWidth() - zoom*mapImage.getIconWidth()*scale);
+		int newHeight = (int) (mapImage.getIconHeight() - zoom*mapImage.getIconHeight()*scale);
+		Image newimg = mapImage.getImage().getScaledInstance(newWidth, newHeight,  Image.SCALE_FAST);
+		mapImage = new ImageIcon(newimg); 
+	    
+		/*
+        Image newimg = mapImage.getImage().getScaledInstance((int) (mapImage.getIconWidth() - zoom*mapImage.getIconWidth()*scale), (int) (mapImage.getIconHeight() - zoom*mapImage.getIconHeight()*scale),  Image.SCALE_FAST);
+		
+		int newImgW = (int) (mapImage.getIconWidth() - zoom*mapImage.getIconWidth()*scale);
+	    int newImgH = (int) (mapImage.getIconHeight() - zoom*mapImage.getIconHeight()*scale);
+	    BufferedImage resized = new BufferedImage(newImgW, newImgH, BufferedImage.TYPE_INT_ARGB);
+	    Graphics2D graphics2D = resized.createGraphics();
+	    //graphics2D.drawImage(mapImage.getImage(), 0, 0, newImgW, newImgH, null);
+	    mapImage = new ImageIcon(resized);
+	    */
 	}
 	
 }

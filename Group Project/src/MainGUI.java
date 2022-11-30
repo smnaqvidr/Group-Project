@@ -1,9 +1,5 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class MainGUI {
@@ -76,6 +72,7 @@ public class MainGUI {
 		mainFrame.remove(layers);
 		
 		// Background maps
+		background.setIcon(map.getImageIcon());
 		background.setBounds(0, 0, map.getImageIcon().getIconWidth(), map.getImageIcon().getIconHeight());
 		background.setLocation(mainFrame.getWidth()/2 - map.getImageIcon().getIconWidth()/2, mainFrame.getHeight()/2 - map.getImageIcon().getIconHeight()/2);
 		layers.setPreferredSize(new Dimension(mainFrame.getWidth(), mainFrame.getHeight()));
@@ -105,34 +102,37 @@ public class MainGUI {
 		mainFrame.repaint();
 	}
 	
+	
 	public void scroll(MouseWheelEvent e) {
-		// Stuck in loop at this step (if we call without a parameter it scales but incorrectly)
-		// Trying to get image to scale down
-		map.resize(e.getWheelRotation());
+		try {
+			map.resize(e.getWheelRotation());
+		}
+		catch (Exception except) {
+			except.printStackTrace();
+		}
 		drawGUI();
-		System.out.println(e.getWheelRotation());
 	}
 	
 	public void nextButtonClicked(ActionEvent e) {
-		System.out.println(e.getActionCommand());
-
 		map.nextFloor();
     	background = new JLabel("", map.getImageIcon(), JLabel.CENTER);
-		
+    	background.addMouseWheelListener(new MouseWheelListener() {
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				scroll(e);
+			}
+        });
     	drawGUI();
-    	
-    	System.out.println(map.getImageIcon());
 	}
 
 	public void prevButtonClicked(ActionEvent e) {
-		System.out.println(e.getActionCommand());
-
 		map.prevFloor();
     	background = new JLabel("", map.getImageIcon(), JLabel.CENTER);
-		
-    	drawGUI();
-    	
-    	System.out.println(map.getImageIcon());
+    	background.addMouseWheelListener(new MouseWheelListener() {
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				scroll(e);
+			}
+        });
+    	drawGUI();   	
 	}
 	
 }
