@@ -50,6 +50,7 @@ public class MainGUI {
         m2 = new JMenu("Favorites");
         m3 = new JMenu("Buildnings");
         
+        layers.add(mb, 0);
         mb.add(m1);
         
         //Create menu items for menu one
@@ -89,14 +90,12 @@ public class MainGUI {
         m3.add(m33);
         
         //Creating the panel at bottom and adding components
-        JPanel panel = new JPanel();        
-        JLabel label = new JLabel("Search");
         JTextField tf = new JTextField(20); // accepts up to 20 characters
         
-        mb.add(label); 
         mb.add(tf);
         
-        mainFrame.getContentPane().add(BorderLayout.NORTH, mb);
+        //mainFrame.getContentPane().add(BorderLayout.NORTH, mb);
+        mainFrame.setJMenuBar(mb);
         mainFrame.setVisible(true);
         
         
