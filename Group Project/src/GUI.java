@@ -22,7 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class GUI implements MouseWheelListener{
+public class GUI {
 	public static JSONArray jrr = new JSONArray();
 	private static JLabel userLabel;
 	private static JLabel userdevLabel;
@@ -35,8 +35,6 @@ public class GUI implements MouseWheelListener{
 	private static JButton button2;
 	private static JButton button3;
 	private static JButton button4;
-	
-	private static JLabel map;
 	
 
 	public static void main(String[] args) {
@@ -195,24 +193,5 @@ public class GUI implements MouseWheelListener{
         frame.setVisible(true);
         panel.add(success);
         
-        //displayMain(); // Temporary function call
-        
-	}
-
-	
-	
-	@Override
-	public void mouseWheelMoved(MouseWheelEvent e) {
-		String message;
-		System.out.println(e);
-	       int notches = e.getWheelRotation();
-	       if (notches < 0) {
-	           message = "Mouse wheel moved UP "
-	                        + -notches + " notch(es)\n";
-	       } else {
-	           message = "Mouse wheel moved DOWN "
-	                        + notches + " notch(es)\n";
-	       }
-	       System.out.println(message);
 	}
 }
