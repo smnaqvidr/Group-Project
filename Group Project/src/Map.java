@@ -1,16 +1,22 @@
 import javax.swing.*;
+
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import java.io.*;
 
 public class Map {
 	private int floorNum;
+	private final double scale = 0.05;
 	private ImageIcon mapImage;
 	private File mapFile;
-	//private POI[] mapPOI;
+	private double w, h;
 	
 	public Map() {
 		mapFile = new File("resources/MC_1.jpg");
 		mapImage = new ImageIcon(mapFile.getPath());
-		floorNum = Integer.parseInt(mapFile.getPath().split("\\\\")[1].split("_")[1].split("\\.")[0]);
+		floorNum = 1;
 	}
 	
 	public Map(String buildingName, int fNum) {
@@ -55,14 +61,29 @@ public class Map {
 		return mapFile.getPath().split("\\\\")[1].split("_")[0];
 	}
 	
-	public ImageIcon getImage() {
+	public ImageIcon getImageIcon() {
 		return mapImage;
 	}
 	
-	/* Might not need this function
-	public String getMapFile() {
-		return mapFile.getPath();
+	/* Working on getting this function working 
+	public void resize(int zoom) throws IOException {
+		int newWidth = (int) (mapImage.getIconWidth() - zoom*mapImage.getIconWidth()*scale);
+		int newHeight = (int) (mapImage.getIconHeight() - zoom*mapImage.getIconHeight()*scale);
+		Image newimg = mapImage.getImage().getScaledInstance(newWidth, newHeight,  Image.SCALE_FAST);
+		mapImage = new ImageIcon(newimg); 
+	    
+	    
+	    
+		
+        Image newimg = mapImage.getImage().getScaledInstance((int) (mapImage.getIconWidth() - zoom*mapImage.getIconWidth()*scale), (int) (mapImage.getIconHeight() - zoom*mapImage.getIconHeight()*scale),  Image.SCALE_FAST);
+		int newImgW = (int) (mapImage.getIconWidth() - zoom*mapImage.getIconWidth()*scale);
+	    int newImgH = (int) (mapImage.getIconHeight() - zoom*mapImage.getIconHeight()*scale);
+	    BufferedImage resized = new BufferedImage(newImgW, newImgH, BufferedImage.TYPE_INT_ARGB);
+	    Graphics2D graphics2D = resized.createGraphics();
+	    //graphics2D.drawImage(mapImage.getImage(), 0, 0, newImgW, newImgH, null);
+	    mapImage = new ImageIcon(resized);
+	    
 	}
-	*/
-
+    */
+	
 }
