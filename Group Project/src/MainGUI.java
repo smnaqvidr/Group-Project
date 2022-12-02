@@ -149,6 +149,8 @@ public class MainGUI {
 		mainFrame.repaint();
 		mainFrame.setVisible(true);
 		
+		addPOI();
+		
 	}
 	
 	public void generateNav() {
@@ -165,21 +167,9 @@ public class MainGUI {
         m14 = new JMenuItem("Logout");
         // Create menu items for buildings menu
         buildingArray = new ArrayList<String>();
-        String buildName = null;
         for (File f : new File("resources/maps/").listFiles()) {
-    		switch (f.getName().split("_")[0]) {
-        		case "MC":
-        			buildName = "Middlesex College";
-        			break;
-        		case "AH":
-        			buildName = "Alumni Hall";
-        			break;
-        		case "VAC":
-        			buildName = "Visual Arts Center";
-        			break;
-    		}
-        	if (!buildingArray.contains(buildName)) {
-        		buildingArray.add(buildName);
+        	if (!buildingArray.contains(f.getName().split("_")[0])) {
+        		buildingArray.add(f.getName().split("_")[0]);
         	}
         }
         // Create menu items for favourites menu
@@ -198,6 +188,30 @@ public class MainGUI {
     	menu.add(m12);
     	menu.add(m13);
     	menu.add(m14);
+    	// Loops through the array of buildings and displays them as options in buildings menu       
+    	String buildName = null;
+        for (String i : buildingArray) {
+        	switch (i) {
+	    		case "MC":
+	    			buildName = "Middlesex College";
+	    			break;
+	    		case "AH":
+	    			buildName = "Alumni Hall";
+	    			break;
+	    		case "VAC":
+	    			buildName = "Visual Arts Center";
+	    			break;
+			}
+        	JMenuItem x = new JMenuItem(buildName);
+        	buildings.add(x);
+        	x.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    map = new Map(i, 1);
+                    drawGUI();
+                }
+            });
+        	
+        }
         // Loops through the array of favorites and displays them as options in favourites menu
         for (String i : favArray) {
         	JMenuItem x = new JMenuItem(i);
@@ -209,18 +223,6 @@ public class MainGUI {
             });
         	
         }
-        // Loops through the array of buildings and displays them as options in buildings menu       
-        for (String i : buildingArray) {
-        	JMenuItem x = new JMenuItem(i);
-        	buildings.add(x);
-        	x.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println(i);
-                }
-            });
-        	
-        }
-        
         
         search = new JTextField(20); // accepts up to 20 characters
         search.setBounds(90, 20, 250, 30);
@@ -241,6 +243,10 @@ public class MainGUI {
         
         m14.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+            	// Need to switch to login GUI here (fix: in GUI class use extends JFrame)
+            	//mainFrame.dispose();
+            	//GUI login = new GUI();
+            	//login.setVisible(true);
                 System.out.println("Logout");
             }
         });
@@ -248,13 +254,11 @@ public class MainGUI {
         
         m13.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	
             	JDialog d = new JDialog(mainFrame, "User Guide");
                 JLabel l = new JLabel("Text ...");
                 d.add(l);
                 d.setSize(200, 200);
-                d.setVisible(true);
-                
+                d.setVisible(true); 
             }
         });
         

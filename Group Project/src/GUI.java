@@ -40,7 +40,7 @@ public class GUI {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		JPanel panel = new JPanel();
-		JFrame frame = new JFrame();
+		JFrame frame = new JFrame("Login");
         frame.setSize(350, 200);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
