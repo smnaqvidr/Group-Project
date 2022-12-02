@@ -11,22 +11,21 @@ public class Map {
 	private final double scale = 0.05;
 	private ImageIcon mapImage;
 	private File mapFile;
-	private double w, h;
 	
 	public Map() {
-		mapFile = new File("resources/MC_1.jpg");
+		mapFile = new File("resources/maps/MC_1.jpg");
 		mapImage = new ImageIcon(mapFile.getPath());
 		floorNum = 1;
 	}
 	
 	public Map(String buildingName, int fNum) {
-		mapFile = new File("resources/" + buildingName + "_" + Integer.toString(fNum) + ".jpg");
+		mapFile = new File("resources/maps/" + buildingName + "_" + Integer.toString(fNum) + ".jpg");
 		mapImage = new ImageIcon(mapFile.getPath());
 		floorNum = fNum;
 	}
 	
 	public Map nextFloor() {
-		mapFile = new File("resources/MC_" + Integer.toString(floorNum + 1) + ".jpg");
+		mapFile = new File("resources/maps/MC_" + Integer.toString(floorNum + 1) + ".jpg");
 		try {
 			if (mapFile.exists()) {
 				mapImage = new ImageIcon(mapFile.getPath());
@@ -40,7 +39,7 @@ public class Map {
 	}
 	
 	public Map prevFloor() {
-		mapFile = new File("resources/MC_" + Integer.toString(floorNum - 1) + ".jpg");
+		mapFile = new File("resources/maps/MC_" + Integer.toString(floorNum - 1) + ".jpg");
 		try {
 			if (mapFile.exists()) {
 				mapImage = new ImageIcon(mapFile.getPath());

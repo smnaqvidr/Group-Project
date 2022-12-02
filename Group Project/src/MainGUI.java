@@ -1,8 +1,11 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class MainGUI {
@@ -12,10 +15,14 @@ public class MainGUI {
 	private static JLayeredPane layers;
 	private static JButton prev, next;
 	
+	private static JPanel container;
+	private static JMenuBar menubar;
+	private static JTextField search;
+	private static JMenu menu, favourites, buildings;
+	private JMenuItem m11, m12, m13, m14;
+	
 	private ArrayList<String> favArray;
-	private JMenuBar mb;
-	private JMenu m1, m2, m3;
-	private JMenuItem m11, m12, m13, m14, m31, m32, m33;
+	private ArrayList<String> buildingArray;
 	
 	public static void main(String args[]) {
 		new MainGUI();
@@ -29,6 +36,7 @@ public class MainGUI {
 		layers = new JLayeredPane();
 		prev = new JButton("< Previous");
 		next = new JButton("Next >");
+        
 		// Setting GUI frame defaults
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -36,46 +44,175 @@ public class MainGUI {
 		mainFrame.setMinimumSize(mainFrame.getSize());
 		mainFrame.setVisible(true);
 		
-		drawGUI(); 
+		generateNav();
 		
-		// Navigation menu
-		ArrayList<String> favArray = new ArrayList<String>(
-    			Arrays.asList("MC_220", "MC_240", "HC_110")
-    			
-    			);
+		drawGUI();
         
-        //Creating the menu and adding components to the menu m2 and m3 are menus inside of menu m1
-        mb = new JMenuBar();
-        m1 = new JMenu("Menu");
-        m2 = new JMenu("Favorites");
-        m3 = new JMenu("Buildnings");
         
-        layers.add(mb, 0);
-        mb.add(m1);
+		// Adding component listeners 
+		mainFrame.addComponentListener(new ComponentListener() {
+			public void componentResized(ComponentEvent e) {
+				drawGUI();
+			}
+
+			public void componentMoved(ComponentEvent e) {
+				drawGUI();
+				
+			}
+
+			public void componentShown(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void componentHidden(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		next.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				nextButtonClicked(e);
+            }
+        });
+		prev.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				prevButtonClicked(e);
+            }
+        });
+		background.addMouseWheelListener(new MouseWheelListener() {
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				scroll(e);
+			}
+        });
+		background.addMouseListener(new MouseListener() {
+            public void mouseClicked(MouseEvent e) {
+               addPOI();
+            }
+
+            //get location when press
+            public void mousePressed(MouseEvent e) {
+                background.setText("Pressed at[" + e.getX() + "," + e.getY() + "]");
+            }
+
+            //put image when release
+            public void mouseReleased(MouseEvent e) {
+                background.setText("Released at[" + e.getX() + "," + e.getY() + "]");
+            }
+
+            //enter
+            public void mouseEntered(MouseEvent e) {
+                //System.out.println("Entered at[" + e.getX() + "," + e.getY() + "]");
+            }
+
+            //exit
+            public void mouseExited(MouseEvent e) {
+                background.setText("window");
+            }
+
+            //dragged status
+            public void mouseDragged(MouseEvent e) {
+                background.setText("Dragged at[" + e.getX() + "," + e.getY() + "]");
+            }
+
+            //moving status
+            public void mouseMoved(MouseEvent e) {
+                background.setText("Moved at[" + e.getX() + "," + e.getY() + "]");
+            }
+        });
+		
+	}
+	
+	public void drawGUI() {
+		// Clear all from layers
+		layers.removeAll();
+		mainFrame.remove(layers);
+		
+		// Update background maps and add to layers
+		background.setIcon(map.getImageIcon());
+		background.setBounds(0, 0, map.getImageIcon().getIconWidth(), map.getImageIcon().getIconHeight());
+		background.setLocation(mainFrame.getWidth()/2 - map.getImageIcon().getIconWidth()/2, mainFrame.getHeight()/2 - map.getImageIcon().getIconHeight()/2);
+		layers.setPreferredSize(new Dimension(mainFrame.getWidth(), mainFrame.getHeight()));
+		layers.add(background, 1);
+		
+		// Update buttons and add to layers
+		next.setBounds(mainFrame.getWidth() - 150, mainFrame.getHeight() - 100, 100, 25);
+		layers.add(next, 0);
+		prev.setBounds(25, mainFrame.getHeight() - 100, 100, 25);
+    	layers.add(prev, 0);
         
-        //Create menu items for menu one
+    	// Add Navigation menu to layers
+    	layers.add(container, 0);
+        
+    	// Add layers back to mainFrame and repaint
+    	mainFrame.add(layers);
+		mainFrame.repaint();
+		mainFrame.setVisible(true);
+		
+	}
+	
+	public void generateNav() {
+		// Initializing navigation bar components
+		container = new JPanel();
+		menubar = new JMenuBar();
+		menu = new JMenu("Menu");
+        favourites = new JMenu("Favorites");
+        buildings = new JMenu("Buildnings");
+        // Create menu items for menu
         m11 = new JMenuItem("Dispaly Options");
         m12 = new JMenuItem("Settings");
         m13 = new JMenuItem("Help");
         m14 = new JMenuItem("Logout");
+        // Create menu items for buildings menu
+        buildingArray = new ArrayList<String>();
+        String buildName = null;
+        for (File f : new File("resources/maps/").listFiles()) {
+    		switch (f.getName().split("_")[0]) {
+        		case "MC":
+        			buildName = "Middlesex College";
+        			break;
+        		case "AH":
+        			buildName = "Alumni Hall";
+        			break;
+        		case "VAC":
+        			buildName = "Visual Arts Center";
+        			break;
+    		}
+        	if (!buildingArray.contains(buildName)) {
+        		buildingArray.add(buildName);
+        	}
+        }
+        // Create menu items for favourites menu
+        favArray = new ArrayList<String>(
+				Arrays.asList("MC_220", "MC_240", "MC_110")
+    			);
         
-        //Create menu items for menu m3 buildings
-        m31 = new JMenuItem("Building 1");
-        m32= new JMenuItem("Building 2");
-        m33 = new JMenuItem("Building 3");
-       
-        //Adds items to menu one
-        m1.add(m3);
-        m1.add(m2);
-        m1.add(m11);
-        m1.add(m12);
-        m1.add(m13);
-        m1.add(m14);
-        
-        //Menu m2 loops through the array of favorites and displays them as options in menu 2
+		// Setting navigation bar defaults 
+		container.setLayout(new BorderLayout());
+		container.setBounds(15, 15, 400, 40);
+		container.add(menubar);
+		menubar.add(menu);
+    	menu.add(buildings);
+    	menu.add(favourites);
+    	menu.add(m11);
+    	menu.add(m12);
+    	menu.add(m13);
+    	menu.add(m14);
+        // Loops through the array of favorites and displays them as options in favourites menu
         for (String i : favArray) {
         	JMenuItem x = new JMenuItem(i);
-        	m2.add(x);
+        	favourites.add(x);
+        	x.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println(i);
+                }
+            });
+        	
+        }
+        // Loops through the array of buildings and displays them as options in buildings menu       
+        for (String i : buildingArray) {
+        	JMenuItem x = new JMenuItem(i);
+        	buildings.add(x);
         	x.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     System.out.println(i);
@@ -84,22 +221,12 @@ public class MainGUI {
         	
         }
         
-        //Adds items to menu three
-        m3.add(m31);
-        m3.add(m32);
-        m3.add(m33);
         
-        //Creating the panel at bottom and adding components
-        JTextField tf = new JTextField(20); // accepts up to 20 characters
-        
-        mb.add(tf);
-        
-        //mainFrame.getContentPane().add(BorderLayout.NORTH, mb);
-        mainFrame.setJMenuBar(mb);
-        mainFrame.setVisible(true);
-        
-        
-        //Action listener for m1
+        search = new JTextField(20); // accepts up to 20 characters
+        search.setBounds(90, 20, 250, 30);
+        menubar.add(search);
+                
+        //Action listeners for menu
         m11.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Dispaly Options");
@@ -131,86 +258,60 @@ public class MainGUI {
             }
         });
         
-        //Action listener for m3
-        m31.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Buildning 1");
-            }
-        });
-        
-        m32.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Buildning 2");
-            }
-        });
-        
-        m33.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Buildning 3");
-            }
-        });
-        
-        
-        
-        
-		// Adding component listeners 
-		mainFrame.addComponentListener(new ComponentListener() {
-			public void componentResized(ComponentEvent e) {
-				drawGUI();
-			}
-
-			public void componentMoved(ComponentEvent e) {
-				drawGUI();
-				
-			}
-
-			public void componentShown(ComponentEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			public void componentHidden(ComponentEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		background.addMouseWheelListener(new MouseWheelListener() {
-			public void mouseWheelMoved(MouseWheelEvent e) {
-				scroll(e);
-			}
-        });
-		next.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				nextButtonClicked(e);
-            }
-        });
-		prev.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				prevButtonClicked(e);
-            }
-        });
-		
 	}
 	
-	public void drawGUI() {
-		layers.removeAll();
-		mainFrame.remove(layers);
-		
-		// Background maps
-		background.setIcon(map.getImageIcon());
-		background.setBounds(0, 0, map.getImageIcon().getIconWidth(), map.getImageIcon().getIconHeight());
-		background.setLocation(mainFrame.getWidth()/2 - map.getImageIcon().getIconWidth()/2, mainFrame.getHeight()/2 - map.getImageIcon().getIconHeight()/2);
-		layers.setPreferredSize(new Dimension(mainFrame.getWidth(), mainFrame.getHeight()));
-		layers.add(background, 1);
-		
-		// Buttons
-		next.setBounds(mainFrame.getWidth() - 150, mainFrame.getHeight() - 100, 100, 25);
-		layers.add(next, 0);
-		prev.setBounds(25, mainFrame.getHeight() - 100, 100, 25);
-    	layers.add(prev, 0);
-        
-    	mainFrame.add(layers);
-		mainFrame.repaint();
+	public void addPOI() {
+		background.addMouseListener(new MouseListener() {
+			
+            public void mouseClicked(MouseEvent e) {
+                System.out.println("Clicked at[" + e.getX() + "," + e.getY() + "]");
+                JLabel jLabel = new JLabel();
+                jLabel.setBounds(e.getX(), e.getY(), 30, 30);
+                Image img;
+				try {
+					img = ImageIO.read(new File("resources/poi.png"));
+					img.getScaledInstance(10, 10, Image.SCALE_AREA_AVERAGING);
+	                ImageIcon icon = new ImageIcon(img);
+	                jLabel.setIcon(icon);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+                
+                layers.add(jLabel, 0);
+
+            }
+
+            //get location when press
+            public void mousePressed(MouseEvent e) {
+                background.setText("Pressed at[" + e.getX() + "," + e.getY() + "]");
+            }
+
+            //put image when release
+            public void mouseReleased(MouseEvent e) {
+                background.setText("Released at[" + e.getX() + "," + e.getY() + "]");
+            }
+
+            //enter
+            public void mouseEntered(MouseEvent e) {
+                background.setText("Entered at[" + e.getX() + "," + e.getY() + "]");
+            }
+
+            //exit
+            public void mouseExited(MouseEvent e) {
+                background.setText("window");
+            }
+
+            //dragged status
+            public void mouseDragged(MouseEvent e) {
+                background.setText("Dragged at[" + e.getX() + "," + e.getY() + "]");
+            }
+
+            //moving status
+            public void mouseMoved(MouseEvent e) {
+                background.setText("Moved at[" + e.getX() + "," + e.getY() + "]");
+            }
+        });
 	}
 	
 	
