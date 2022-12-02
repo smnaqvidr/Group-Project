@@ -1,1 +1,32 @@
-[{"Username":"mike","User\/Dev":"Dev","Password":"www"},{"Username":"Michael","User\/Dev":"Dev","Password":"sam"},{"Username":"","User\/Dev":"","Password":""}]
+[   {
+        "Username":"mike",
+        "User\/Dev":"Dev",
+        "Password":"www",
+        "Fav_POI": [
+            {
+               "name" : "HC_220",
+               "Coordiate": "",
+            },
+            {
+                "name": "HC_250",
+                "Coordiate" : ""
+            }]
+    },
+    {
+        "Username":"Michael",
+        "User\/Dev":"Dev",
+        "Password":"sam"
+        
+    },
+    {
+        "Username":"",
+        "User\/Dev":"",
+        "Password":""
+        
+    }
+]
+
+ 
+ 
+ 
+ 

@@ -28,6 +28,7 @@ public class MainGUI {
 	
 	private ArrayList<String> favArray;
 	private ArrayList<String> buildingArray;
+	public static ArrayList<String> fav_menu_arr = new ArrayList<String>();
 	
 	public static void main(String args[]) {
 		new MainGUI();
@@ -134,6 +135,23 @@ public class MainGUI {
 		layers.removeAll();
 		mainFrame.remove(layers);
 		
+		JLabel TestTest = new JLabel();
+		TestTest.setOpaque(true);
+		TestTest.setBackground(Color.blue);
+		TestTest.setBounds(150, 150, 200, 200);
+		
+		
+		
+		int xC = 200;
+    	int yC = 200;
+    	
+    	JPanel contentPane = new JPanel() {
+            public void paintComponent(Graphics g) {
+                                  Image img = Toolkit.getDefaultToolkit().getImage(
+                                  "pin.png");
+                                  g.drawImage(img, xC, yC, 40, 50, this);
+                                 }
+           };
 		// Update background maps and add to layers
 		background.setIcon(map.getImageIcon());
 		background.setBounds(0, 0, map.getImageIcon().getIconWidth(), map.getImageIcon().getIconHeight());
@@ -150,6 +168,14 @@ public class MainGUI {
         
     	// Add Navigation menu to layers
     	layers.add(container, 0);
+    	layers.add(TestTest, Integer.valueOf(1));
+    	//layers.add(contentPane, Integer.valueOf(1));
+    	
+    	
+    	
+    	
+          // System.out.println("Hello");
+        //layers.add(contentPane, Integer.valueOf(3));
         
     	// Add layers back to mainFrame and repaint
     	mainFrame.add(layers);
@@ -157,7 +183,7 @@ public class MainGUI {
 		mainFrame.repaint();
 		mainFrame.setVisible(true);
 		
-		addPOI();
+		//addPOI();
 		
 	}
 	
@@ -173,6 +199,7 @@ public class MainGUI {
         m12 = new JMenuItem("Settings");
         m13 = new JMenuItem("Help");
         m14 = new JMenuItem("Logout");
+        
         // Create menu items for buildings menu
         buildingArray = new ArrayList<String>();
         for (File f : new File("resources/maps/").listFiles()) {
@@ -220,17 +247,6 @@ public class MainGUI {
             });
         	
         }
-        // Loops through the array of favorites and displays them as options in favourites menu
-        for (String i : favArray) {
-        	JMenuItem x = new JMenuItem(i);
-        	favourites.add(x);
-        	x.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println(i);
-                }
-            });
-        	
-        }
         
         search = new JTextField(20); // accepts up to 20 characters
         search.setBounds(90, 20, 250, 30);
@@ -249,11 +265,9 @@ public class MainGUI {
 				//Change JSON file!!!!!!!!
 		    	try(FileReader reader = new FileReader("UserData.json") ) 
 		    	{
-
 		    		Object obj = parser.parse(reader);
 		    		JSONArray empList = (JSONArray) obj;
-		    		//System.out.println(empList);
-		    		
+
 		    		empList.forEach(emp -> parseEmpObj((JSONObject)emp, searchWord));
 		    		
 		    	} catch(Exception err) 
@@ -263,10 +277,10 @@ public class MainGUI {
 			}	
         });
         
+      ///Displays menu for favourites in the top menu
+        printFavMenu();
         
-        
-        
-                
+          
         //Action listeners for menu
         m11.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -403,5 +417,73 @@ public class MainGUI {
     		System.out.println("Room is: " + room);
 		}
     }
+	
+	public static void printFavMenu() {
+		
+		int xC = 50;
+		int yC = 60;
+		JSONParser parser = new JSONParser();
+        try {
+        	
+        	Object obj = parser.parse(new FileReader("UserData.json"));
+        	JSONArray empList = (JSONArray) obj;
+        	 
+        	empList.forEach(emp -> parseEmpObjUser_fav((JSONObject)emp));
+
+        	
+        } catch(Exception e1) {
+        	e1.printStackTrace();
+        }
+        
+        System.out.println("test_arr: " + fav_menu_arr);
+        
+		for (String i : fav_menu_arr) {
+		        	
+		        	JMenuItem x = new JMenuItem(i);
+		        	favourites.add(x);
+		        	x.addActionListener(new ActionListener() {
+		                public void actionPerformed(ActionEvent e) {
+		                    //System.out.println(i);
+		                	display_POI(xC,yC);
+
+		                }
+		 });}
+	}
+	
+public static void parseEmpObjUser_fav(JSONObject emp) {
+		
+		JSONObject jsonObject = (JSONObject) emp;
+    	String username = (String) jsonObject.get("Username");    	
+    	if(username.equals("mike")) {
+    		JSONArray test_arr_fav = (JSONArray) emp.get("Fav_POI");
+        	test_arr_fav.forEach(fav -> print_menu_two_room((JSONObject)fav));	
+
+    	}
+
+    	
+    	
+    }
+	
+	public static void print_menu_two_room(JSONObject emp) {
+
+			JSONObject jsonObject = (JSONObject) emp;
+	    	String name = (String) jsonObject.get("name");
+	    	fav_menu_arr.add(name);
+		}
+	
+	public static void display_POI(int x, int y) {
+		
+		JPanel contentPane = new JPanel() {
+            public void paintComponent(Graphics g) {
+                                  Image img = Toolkit.getDefaultToolkit().getImage(
+                                  "pin.png");
+                                  g.drawImage(img, x, y, 25, 40, this);
+                                 }
+           };
+           System.out.println("Hello");
+           layers.add(contentPane,0);
+	}
+	
+	
 	
 }
