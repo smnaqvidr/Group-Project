@@ -14,8 +14,7 @@ public class Map {
 	private String buildingName;
 	
 	public Map() {
-
-		mapFile = new File("resources/maps/MC_1.jpg");
+		mapFile = new File("resources/maps/MC_1.png");
 		buildingName = "MC";
 		mapImage = new ImageIcon(mapFile.getPath());
 		floorNum = 1;
@@ -23,14 +22,14 @@ public class Map {
 	}
 	
 	public Map(String buildName, int fNum) {
-		mapFile = new File("resources/maps/" + buildName + "_" + Integer.toString(fNum) + ".jpg");
+		mapFile = new File("resources/maps/" + buildName + "_" + Integer.toString(fNum) + ".png");
 		buildingName = buildName;
 		mapImage = new ImageIcon(mapFile.getPath());
 		floorNum = fNum;
 	}
 	
 	public Map nextFloor() {
-		mapFile = new File("resources/maps/" + buildingName + "_" + Integer.toString(floorNum + 1) + ".jpg");
+		mapFile = new File("resources/maps/" + buildingName + "_" + Integer.toString(floorNum + 1) + ".png");
 		try {
 			if (mapFile.exists()) {
 				mapImage = new ImageIcon(mapFile.getPath());
@@ -44,7 +43,7 @@ public class Map {
 	}
 	
 	public Map prevFloor() {
-		mapFile = new File("resources/maps/" + buildingName + "_" + Integer.toString(floorNum - 1) + ".jpg");
+		mapFile = new File("resources/maps/" + buildingName + "_" + Integer.toString(floorNum - 1) + ".png");
 		try {
 			if (mapFile.exists()) {
 				mapImage = new ImageIcon(mapFile.getPath());
@@ -62,7 +61,7 @@ public class Map {
 	}
 	
 	public String getBuilding() {
-		return mapFile.getPath().split("\\\\")[1].split("_")[0];
+		return buildingName;
 	}
 	
 	public ImageIcon getImageIcon() {
@@ -70,16 +69,16 @@ public class Map {
 	}
 	
 
-	/* Working on getting this function working 
+	// Working on getting this function working 
 	public void resize(int zoom) throws IOException {
 		int newWidth = (int) (mapImage.getIconWidth() - zoom*mapImage.getIconWidth()*scale);
 		int newHeight = (int) (mapImage.getIconHeight() - zoom*mapImage.getIconHeight()*scale);
-		Image newimg = mapImage.getImage().getScaledInstance(newWidth, newHeight,  Image.SCALE_FAST);
+		Image newimg = mapImage.getImage().getScaledInstance(newWidth, newHeight,  Image.SCALE_SMOOTH);
 		mapImage = new ImageIcon(newimg); 
 	    
 	    
 	    
-		
+		/*
         Image newimg = mapImage.getImage().getScaledInstance((int) (mapImage.getIconWidth() - zoom*mapImage.getIconWidth()*scale), (int) (mapImage.getIconHeight() - zoom*mapImage.getIconHeight()*scale),  Image.SCALE_FAST);
 		int newImgW = (int) (mapImage.getIconWidth() - zoom*mapImage.getIconWidth()*scale);
 	    int newImgH = (int) (mapImage.getIconHeight() - zoom*mapImage.getIconHeight()*scale);
@@ -87,8 +86,9 @@ public class Map {
 	    Graphics2D graphics2D = resized.createGraphics();
 	    //graphics2D.drawImage(mapImage.getImage(), 0, 0, newImgW, newImgH, null);
 	    mapImage = new ImageIcon(resized);
+	    */
 	    
 	}
-    */
+   
 	
 }
