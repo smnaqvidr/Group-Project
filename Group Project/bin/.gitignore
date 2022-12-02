@@ -1,9 +1,7 @@
-<<<<<<< HEAD
 /GUI$1.class
 /GUI$2.class
 /GUI$3.class
 /GUI.class
-=======
 /MainGUI$1.class
 /MainGUI$10.class
 /MainGUI$11.class
@@ -12,11 +10,4 @@
 /MainGUI$14.class
 /MainGUI$2.class
 /MainGUI$3.class
-/MainGUI$4.class
-/MainGUI$5.class
-/MainGUI$6.class
-/MainGUI$7.class
-/MainGUI$8.class
-/MainGUI$9.class
->>>>>>> Main-GUI
-/MainGUI$15.class
+/UserData.json

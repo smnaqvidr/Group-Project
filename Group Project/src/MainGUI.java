@@ -321,7 +321,7 @@ public class MainGUI {
 	
 	public void scroll(MouseWheelEvent e) {
 		try {
-			//map.resize(e.getWheelRotation());
+			map.resize(e.getWheelRotation());
 		}
 		catch (Exception except) {
 			except.printStackTrace();
