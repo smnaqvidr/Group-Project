@@ -54,29 +54,7 @@ public class MainGUI {
 		
 		drawGUI();
 		
-		// add to favorites functionality
-		JSONParser parser = new JSONParser();
-		try {
-			Object obj = parser.parse(new FileReader("favData.json"));
-			JSONArray arr = (JSONArray)obj;
-			System.out.println(arr);
-			
-			JSONObject favPOI = new JSONObject();
-			favPOI.put("Username", "mike");
-			favPOI.put("favList", new ArrayList<String>(Arrays.asList("MC_220", "MC_240", "MC_110")));
-			
-			arr.add(favPOI);
-			
-			System.out.println(arr);
-			
-			FileWriter file = new FileWriter("favData.json");
-			file.write(arr.toJSONString());
-			file.flush();
-			file.close();
-			
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
+		addToFavourites();
 		
 		// Adding component listeners 
 		mainFrame.addComponentListener(new ComponentListener() {
@@ -199,6 +177,7 @@ public class MainGUI {
         		buildingArray.add(f.getName().split("_")[0]);
         	}
         }
+     		
         // Create menu items for favourites menu
         favArray = new ArrayList<String>(
 				Arrays.asList("MC_220", "MC_240", "MC_110")
@@ -283,6 +262,48 @@ public class MainGUI {
             }
         });
         
+	}
+	
+	public void addToFavourites() {
+		// add to favorites functionality
+		JSONParser parser = new JSONParser();
+		try {
+			Object obj = parser.parse(new FileReader("favData.json"));
+			JSONArray arr = (JSONArray)obj;
+			System.out.println(arr);
+			
+		
+			JSONObject favPOI = new JSONObject();
+			favPOI.put("Username", "mike");
+			favPOI.put("favList", new ArrayList<String>(Arrays.asList("MC_220", "MC_240", "MC_110")));
+			//favPOI.put("favList", new ArrayList<String>(Arrays.asList("POI1", "POI2", "POI3")));
+			
+			// Overwrite object if user already exists to eliminate duplicate entries (e.g. one entry per user)
+			boolean contains = false;
+			for (Object o : arr) {
+				JSONObject jobj = (JSONObject)o;
+				if (jobj.get("Username").equals(favPOI.get("Username"))) {
+					contains = true;
+				}
+			}
+			if (contains) {
+				arr.add(0, favPOI);;
+			}
+			else {
+				arr.add(favPOI);
+			}
+			
+			System.out.println(arr);
+			
+			FileWriter file = new FileWriter("favData.json");
+			file.write(arr.toJSONString());
+			file.flush();
+			file.close();
+			
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
 	}
 	
 	public void addPOI() {
