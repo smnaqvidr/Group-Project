@@ -25,7 +25,6 @@ public class MainGUI {
 	private ArrayList<String> buildingArray;
 	
 	public static void main(String args[]) {
-		System.out.println("Please");
 		new MainGUI();
 	}
 	
@@ -132,7 +131,7 @@ public class MainGUI {
 		// Update background maps and add to layers
 		background.setIcon(map.getImageIcon());
 		background.setBounds(0, 0, map.getImageIcon().getIconWidth(), map.getImageIcon().getIconHeight());
-		background.setLocation(mainFrame.getWidth()/2 - map.getImageIcon().getIconWidth()/2, mainFrame.getHeight()/2 - map.getImageIcon().getIconHeight()/2);
+		background.setLocation(mainFrame.getWidth()/2 - map.getImageIcon().getIconWidth()/2, 0); //mainFrame.getHeight()/2 - map.getImageIcon().getIconHeight()/2);
 		layers.setPreferredSize(new Dimension(mainFrame.getWidth(), mainFrame.getHeight()));
 		layers.add(background, 1);
 		
@@ -321,12 +320,8 @@ public class MainGUI {
 	
 	
 	public void scroll(MouseWheelEvent e) {
-		try {
-			map.resize(e.getWheelRotation());
-		}
-		catch (Exception except) {
-			except.printStackTrace();
-		}
+		//map.zoom(e.getWheelRotation());
+		
 		drawGUI();
 	}
 	
