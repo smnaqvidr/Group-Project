@@ -135,17 +135,25 @@ public class MainGUI {
 		layers.removeAll();
 		mainFrame.remove(layers);
 		
+		ImageIcon iconLogo = new ImageIcon("pin.png");
+		
+		
 		JLabel TestTest = new JLabel();
 		TestTest.setOpaque(true);
-		TestTest.setBackground(Color.blue);
-		TestTest.setBounds(150, 150, 200, 200);
+		//TestTest.setBackground(Color.blue);
+		TestTest.setBounds(150, 150, 500, 500);
+		TestTest.setIcon(iconLogo);
+		
+
+		
+		
 		
 		
 		
 		int xC = 200;
     	int yC = 200;
     	
-    	JPanel contentPane = new JPanel() {
+    	JLabel contentPane = new JLabel() {
             public void paintComponent(Graphics g) {
                                   Image img = Toolkit.getDefaultToolkit().getImage(
                                   "pin.png");
@@ -169,7 +177,8 @@ public class MainGUI {
     	// Add Navigation menu to layers
     	layers.add(container, 0);
     	layers.add(TestTest, Integer.valueOf(1));
-    	//layers.add(contentPane, Integer.valueOf(1));
+    	layers.add(contentPane, Integer.valueOf(2));
+    	
     	
     	
     	
@@ -194,6 +203,7 @@ public class MainGUI {
 		menu = new JMenu("Menu");
         favourites = new JMenu("Favorites");
         buildings = new JMenu("Buildnings");
+        
         // Create menu items for menu
         m11 = new JMenuItem("Dispaly Options");
         m12 = new JMenuItem("Settings");
@@ -207,10 +217,8 @@ public class MainGUI {
         		buildingArray.add(f.getName().split("_")[0]);
         	}
         }
-        // Create menu items for favourites menu
-        favArray = new ArrayList<String>(
-				Arrays.asList("MC_220", "MC_240", "MC_110")
-    			);
+
+
         
 		// Setting navigation bar defaults 
 		container.setLayout(new BorderLayout());
