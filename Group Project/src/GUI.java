@@ -36,9 +36,7 @@ public class GUI {
 	private static JButton button3;
 	private static JButton button4;
 	
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	public GUI() {
 		JPanel panel = new JPanel();
 		JFrame frame = new JFrame("Login");
         frame.setSize(350, 200);
@@ -106,9 +104,9 @@ public class GUI {
                 }
              
         }
-   }
- }
-);
+    	}
+        }
+		);
         panel.add(button);
         
         button2 = new JButton("Sign Up");
@@ -182,9 +180,9 @@ public class GUI {
                 JOptionPane.showMessageDialog(null, "Invalid Username or Password");
              }
         }
-   }
- }
-);
+    	}	
+        }
+        );
         panel.add(button3);
         
         
@@ -193,5 +191,9 @@ public class GUI {
         frame.setVisible(true);
         panel.add(success);
         
+	}
+	
+	public static void main(String[] args) {
+		new GUI();
 	}
 }

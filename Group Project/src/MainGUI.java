@@ -25,7 +25,7 @@ public class MainGUI {
 	private static JMenuBar menubar;
 	private static JTextField search;
 	private static JMenu menu, favourites, buildings;
-	private JMenuItem m11, m12, m13, m14;
+	private JMenuItem display, settings, help, logout;
 	
 	private ArrayList<String> favArray;
 	private ArrayList<String> buildingArray;
@@ -178,7 +178,6 @@ public class MainGUI {
 		mainFrame.repaint();
 		mainFrame.setVisible(true);
 		
-		
 	}
 	
 	public void generateNav() {
@@ -189,10 +188,10 @@ public class MainGUI {
         favourites = new JMenu("Favorites");
         buildings = new JMenu("Buildnings");
         // Create menu items for menu
-        m11 = new JMenuItem("Dispaly Options");
-        m12 = new JMenuItem("Settings");
-        m13 = new JMenuItem("Help");
-        m14 = new JMenuItem("Logout");
+        display = new JMenuItem("Dispaly Options");
+        settings = new JMenuItem("Settings");
+        help = new JMenuItem("Help");
+        logout = new JMenuItem("Logout");
         // Create menu items for buildings menu
         buildingArray = new ArrayList<String>();
         for (File f : new File("resources/maps/").listFiles()) {
@@ -212,10 +211,10 @@ public class MainGUI {
 		menubar.add(menu);
     	menu.add(buildings);
     	menu.add(favourites);
-    	menu.add(m11);
-    	menu.add(m12);
-    	menu.add(m13);
-    	menu.add(m14);
+    	menu.add(display);
+    	menu.add(settings);
+    	menu.add(help);
+    	menu.add(logout);
     	// Loops through the array of buildings and displays them as options in buildings menu       
     	String buildName = null;
         for (String i : buildingArray) {
@@ -257,30 +256,24 @@ public class MainGUI {
         menubar.add(search);
                 
         //Action listeners for menu
-        m11.addActionListener(new ActionListener() {
+        display.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Dispaly Options");
             }
         });
-        
-        m12.addActionListener(new ActionListener() {
+        settings.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Settings");
             }
         });
-        
-        m14.addActionListener(new ActionListener() {
+        logout.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	// Need to switch to login GUI here (fix: in GUI class use extends JFrame)
-            	//mainFrame.dispose();
-            	//GUI login = new GUI();
-            	//login.setVisible(true);
-                System.out.println("Logout");
+            	mainFrame.setVisible(false);
+            	mainFrame.dispose();
+            	new GUI();
             }
-        });
-        
-        
-        m13.addActionListener(new ActionListener() {
+        });      
+        help.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	JDialog d = new JDialog(mainFrame, "User Guide");
                 JLabel l = new JLabel("Text ...");
@@ -349,7 +342,6 @@ public class MainGUI {
 	
 	public void scroll(MouseWheelEvent e) {
 		//map.zoom(e.getWheelRotation());
-		
 		drawGUI();
 	}
 	

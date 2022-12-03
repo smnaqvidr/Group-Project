@@ -66,7 +66,7 @@ public class Map {
 		double w = mapImage.getIconWidth() / Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 		double h = mapImage.getIconHeight() / Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 		Double min = Math.min(w, h);
-		Image newimg = mapImage.getImage().getScaledInstance((int) (mapImage.getIconWidth() / min * 0.8), (int) (mapImage.getIconHeight() / min * 0.8),  BufferedImage.SCALE_SMOOTH);
+		Image newimg = mapImage.getImage().getScaledInstance((int) (mapImage.getIconWidth() / min * 0.8), (int) (mapImage.getIconHeight() / min * 0.8),  Image.SCALE_FAST);
 		mapImage = new ImageIcon(newimg);   
 	}
    
