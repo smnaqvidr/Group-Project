@@ -1,12 +1,18 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 public class MainGUI {
 	private Map map;
@@ -42,13 +48,36 @@ public class MainGUI {
 		mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		mainFrame.setSize(map.getImageIcon().getIconWidth(), map.getImageIcon().getIconHeight());
 		mainFrame.setMinimumSize(mainFrame.getSize());
-		mainFrame.setVisible(true);
+		//mainFrame.setVisible(true);
 		
 		generateNav();
 		
 		drawGUI();
-        
-        
+		
+		// add to favorites
+		JSONParser parser = new JSONParser();
+		try {
+			Object obj = parser.parse(new FileReader("favData.json"));
+			JSONArray arr = (JSONArray)obj;
+			System.out.println(arr);
+			
+			JSONObject favPOI = new JSONObject();
+			favPOI.put("Username", "mike");
+			favPOI.put("favList", new ArrayList<String>(Arrays.asList("MC_220", "MC_240", "MC_110")));
+			
+			arr.add(favPOI);
+			
+			System.out.println(arr);
+			
+			FileWriter file = new FileWriter("favData.json");
+			file.write(arr.toJSONString());
+			file.flush();
+			file.close();
+			
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
 		// Adding component listeners 
 		mainFrame.addComponentListener(new ComponentListener() {
 			public void componentResized(ComponentEvent e) {
@@ -147,7 +176,7 @@ public class MainGUI {
     	// Add layers back to mainFrame and repaint
     	mainFrame.add(layers);
 		mainFrame.repaint();
-		mainFrame.setVisible(true);
+		//mainFrame.setVisible(true);
 		
 		addPOI();
 		
