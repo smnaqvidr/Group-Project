@@ -48,13 +48,13 @@ public class MainGUI {
 		mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		mainFrame.setSize(map.getImageIcon().getIconWidth(), map.getImageIcon().getIconHeight());
 		mainFrame.setMinimumSize(mainFrame.getSize());
-		//mainFrame.setVisible(true);
+		mainFrame.setVisible(true);
 		
 		generateNav();
 		
 		drawGUI();
 		
-		// add to favorites
+		// add to favorites functionality
 		JSONParser parser = new JSONParser();
 		try {
 			Object obj = parser.parse(new FileReader("favData.json"));
@@ -172,13 +172,12 @@ public class MainGUI {
         
     	// Add Navigation menu to layers
     	layers.add(container, 0);
-        
+    	
     	// Add layers back to mainFrame and repaint
     	mainFrame.add(layers);
 		mainFrame.repaint();
-		//mainFrame.setVisible(true);
+		mainFrame.setVisible(true);
 		
-		addPOI();
 		
 	}
 	
