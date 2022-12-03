@@ -7,9 +7,13 @@
 		</attributes>
 	</classpathentry>
 <<<<<<< HEAD
+<<<<<<< HEAD
 	<classpathentry kind="lib" path="/Users/ebba/Desktop/json-simple-1.1.1.jar"/>
 =======
 	<classpathentry kind="lib" path="C:/Users/micha/Downloads/json-simple-1.1.1.jar"/>
 >>>>>>> cc11c2e0991b990a0f9747179175104f4f177eed
+=======
+	<classpathentry kind="lib" path="lib/json-simple-1.1.1.jar"/>
+>>>>>>> Main-GUI
 	<classpathentry kind="output" path="bin"/>
 </classpath>

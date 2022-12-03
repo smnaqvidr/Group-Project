@@ -30,6 +30,7 @@ public class MainGUI {
 	private ArrayList<String> buildingArray;
 	
 	public static void main(String args[]) {
+		System.out.println("Please");
 		new MainGUI();
 	}
 	
