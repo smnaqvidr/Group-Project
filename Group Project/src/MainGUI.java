@@ -353,7 +353,7 @@ public class MainGUI {
             			JSONArray jrr = new JSONArray();
             			JSONParser jp= new JSONParser();
             			try {
-            				FileReader file = new FileReader("POI.json");
+            				FileReader file = new FileReader("POIs.json");
             				jrr=(JSONArray)jp.parse(file);
             			}catch(Exception ex) {
             				JOptionPane.showMessageDialog(null, "Error occurred");
@@ -366,7 +366,7 @@ public class MainGUI {
             			obj.put("map",map.getBuilding()+"_"+map.getFloor()+".jpg");
             			jrr.add(obj);
             			try {
-            				FileWriter file = new FileWriter("POI.json");
+            				FileWriter file = new FileWriter("POIs.json");
             				file.write(jrr.toJSONString());
             				file.close();
             			}catch(Exception ex) {
