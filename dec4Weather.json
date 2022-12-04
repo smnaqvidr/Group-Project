@@ -1,0 +1,43 @@
+{
+  "coord": {
+    "lon": -81.2434,
+    "lat": 42.9832
+  },
+  "weather": [
+    {
+      "id": 802,
+      "main": "Clouds",
+      "description": "scattered clouds",
+      "icon": "03n"
+    }
+  ],
+  "base": "stations",
+  "main": {
+    "temp": -1.26,
+    "feels_like": -6.58,
+    "temp_min": -1.67,
+    "temp_max": -0.82,
+    "pressure": 1015,
+    "humidity": 63
+  },
+  "visibility": 10000,
+  "wind": {
+    "speed": 5.14,
+    "deg": 210
+  },
+  "clouds": {
+    "all": 40
+  },
+  "dt": 1670194596,
+  "sys": {
+    "type": 2,
+    "id": 20399,
+    "country": "CA",
+    "sunrise": 1670157588,
+    "sunset": 1670190659
+  },
+  "timezone": -18000,
+  "id": 6058560,
+  "name": "London",
+  "cod": 200
+}
