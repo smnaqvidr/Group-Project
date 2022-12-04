@@ -308,21 +308,96 @@ public class MainGUI {
 		background.addMouseListener(new MouseListener() {
 			
             public void mouseClicked(MouseEvent e) {
-                System.out.println("Clicked at[" + e.getX() + "," + e.getY() + "]");
-                JLabel jLabel = new JLabel();
-                jLabel.setBounds(e.getX(), e.getY(), 30, 30);
-                Image img;
-				try {
-					img = ImageIO.read(new File("resources/poi.png"));
-					img.getScaledInstance(10, 10, Image.SCALE_AREA_AVERAGING);
-	                ImageIcon icon = new ImageIcon(img);
-	                jLabel.setIcon(icon);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
                 
-                layers.add(jLabel, 0);
+            	System.out.println("Clicked at[" + e.getX() + "," + e.getY() + "]");
+            	JPanel panelPoi = new JPanel();
+        		JFrame framePoi = new JFrame();
+                framePoi.setSize(350, 200);
+                framePoi.setLocationRelativeTo(null);
+                framePoi.add(panelPoi);
+                
+                panelPoi.setLayout(null);
+                
+                JLabel poiName = new JLabel("Name");
+                poiName.setBounds(10, 20, 80, 25);
+                panelPoi.add(poiName);
+                JTextField poiTextName = new JTextField();
+                poiTextName.setBounds(100, 20, 165, 25);
+                panelPoi.add(poiTextName);
+                
+                JLabel poiDesc = new JLabel("Description");
+                poiDesc.setBounds(10, 50, 80, 25);
+                panelPoi.add(poiDesc);
+                JTextField poiTextDesc = new JTextField();
+                poiTextDesc.setBounds(100, 50, 165, 25);
+                panelPoi.add(poiTextDesc);
+                
+                JLabel poiType = new JLabel("Type");
+                poiType.setBounds(10, 80, 80, 25);
+                panelPoi.add(poiType);
+                JTextField poiTextType = new JTextField();
+                poiTextType.setBounds(100, 80, 165, 25);
+                panelPoi.add(poiTextType);
+                framePoi.setVisible(true);
+                
+                
+                int poiX = e.getX()-43;
+                int poiY= e.getY()-127;
+                int[] xy = new int[]{poiX, poiY};
+               
+                JButton button2 = new JButton("Create POI");
+                button2.setBounds(100, 110, 120, 25);
+                button2.addActionListener(new ActionListener() {
+                	public void actionPerformed(ActionEvent e) {
+            			JSONObject obj = new JSONObject();
+            			JSONArray jrr = new JSONArray();
+            			JSONParser jp= new JSONParser();
+            			try {
+            				FileReader file = new FileReader("POI.json");
+            				jrr=(JSONArray)jp.parse(file);
+            			}catch(Exception ex) {
+            				JOptionPane.showMessageDialog(null, "Error occurred");
+            			}
+            			obj.put("name", poiTextName.getText());
+            			obj.put("description", poiTextDesc.getText());
+            			obj.put("type", poiTextType.getText());
+            			obj.put("coordinateX", poiX);
+            			obj.put("coordinateY", poiY);
+            			obj.put("map",map.getBuilding()+"_"+map.getFloor()+".jpg");
+            			jrr.add(obj);
+            			try {
+            				FileWriter file = new FileWriter("POI.json");
+            				file.write(jrr.toJSONString());
+            				file.close();
+            			}catch(Exception ex) {
+            				JOptionPane.showMessageDialog(null, "Error occurred");
+            			}
+            			JOptionPane.showMessageDialog(null, jrr);
+            		// TODO Auto-generated method stub
+            		
+            	}
+                });
+                panelPoi.add(button2);
+                
+                
+            	
+                JLabel jLabel1 = new JLabel("P");
+                jLabel1.setBounds(poiX, poiY, 30, 30);
+                
+//                  JLabel jLabel1 = new JLabel();
+////                jLabel.setBounds(e.getX(), e.getY(), 30, 30);
+////                Image img;
+////				try {
+////					img = ImageIO.read(new File("resources/poi.png"));
+////					img.getScaledInstance(10, 10, Image.SCALE_AREA_AVERAGING);
+////	                ImageIcon icon = new ImageIcon(img);
+////	                jLabel.setIcon(icon);
+////				} catch (IOException e1) {
+////					// TODO Auto-generated catch block
+////					e1.printStackTrace();
+////				}
+                
+                layers.add(jLabel1, 0);
 
             }
 
